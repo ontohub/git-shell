@@ -38,4 +38,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rspec', '~> 3.7'
   spec.add_development_dependency 'rubocop', '~> 0.51.0'
   spec.add_development_dependency 'simplecov', '~> 0.15.1'
+
+  spec.add_dependency 'config', '~> 1.6.1'
+  spec.add_dependency 'rest-client', '~> 2.0.2'
 end

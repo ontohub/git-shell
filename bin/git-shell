@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+unless ENV['SSH_CONNECTION']
+  warn 'Only git actions via SSH are allowed.'
+  exit 1
+end
+
+require 'bundler/setup'
+require 'git-shell'
+
+GitShell::Application.boot
+
+public_key_id = ARGV[0].to_i
+ssh_command = ENV['SSH_ORIGINAL_COMMAND']&.split(' ')
+
+GitShell::Application.execute(ssh_command, public_key_id)

@@ -14,6 +14,11 @@ Metrics/LineLength:
     - 'config/initializers/devise.rb'
     - 'features/steps/**/*.rb'
 
+Naming/FileName:
+  Exclude:
+    - lib/git-shell.rb
+    - spec/git-shell_spec.rb
+
 Layout/AlignParameters:
   Enabled: false
 

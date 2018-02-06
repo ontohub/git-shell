@@ -2,8 +2,10 @@
 
 require_relative 'support/simplecov'
 
-require 'factory_bot_rails'
+ENV['GIT_SHELL_ENV'] = 'test'
+
 require 'fuubar'
+require 'pry'
 require 'rspec'
 
 require 'git-shell'
