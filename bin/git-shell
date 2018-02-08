@@ -11,7 +11,7 @@ require 'git-shell'
 
 GitShell::Application.boot
 
-public_key_id = ARGV[0].to_i
+ENV['PUBLIC_KEY_ID'] = ARGV[0].to_i
 ssh_command = ENV['SSH_ORIGINAL_COMMAND']&.split(' ')
 
-GitShell::Application.execute(ssh_command, public_key_id)
+GitShell::Application.execute(ssh_command, ENV['PUBLIC_KEY_ID'])
