@@ -44,7 +44,7 @@ module GitShell
       # rubocop:enable Metrics/MethodLength
       operation_name = 'GitAuthorization'
       query = <<~QUERY
-        query #{operation_name}($keyId: Int!, $repositoryId: ID!) {
+        query gitAuthorization($keyId: Int!, $repositoryId: ID!) {
           pull: gitAuthorization(keyId: $keyId, repositoryId: $repositoryId, action: pull)
           push: gitAuthorization(keyId: $keyId, repositoryId: $repositoryId, action: push)
         }

@@ -11,7 +11,30 @@ require 'git-shell'
 
 GitShell::Application.boot
 
-ENV['PUBLIC_KEY_ID'] = ARGV[0].to_i
-ssh_command = ENV['SSH_ORIGINAL_COMMAND']&.split(' ')
-
-GitShell::Application.execute(ssh_command, ENV['PUBLIC_KEY_ID'])
+case ARGV[0]
+when 'update'
+  # Called by the update hook
+  repository_slug = ARGV[1]
+  updated_ref = ARGV[2]
+  revision_before_update = ARGV[3]
+  revision_after_update = ARGV[4]
+  forced_update = ARGV[5]
+  GitShell::Application.update(ENV['PUBLIC_KEY_ID'],
+                               repository_slug,
+                               updated_ref,
+                               revision_before_update,
+                               revision_after_update,
+                               forced_update)
+when 'post-receive'
+  # Called by the post-receive hook
+  repository_slug = ARGV[1]
+  updated_refs = ARGV[2]
+  GitShell::Application.post_receive(ENV['PUBLIC_KEY_ID'],
+                                     repository_slug,
+                                     updated_refs)
+else
+  # Called directly by git on the SSH connection
+  ENV['PUBLIC_KEY_ID'] = ARGV[0].to_i
+  ssh_command = ENV['SSH_ORIGINAL_COMMAND']&.split(' ')
+  GitShell::Application.execute(ssh_command, ENV['PUBLIC_KEY_ID'])
+end

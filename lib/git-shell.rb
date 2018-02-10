@@ -6,5 +6,6 @@ require 'git-shell/application'
 require 'git-shell/authorization'
 require 'git-shell/authorization_call'
 require 'git-shell/executor'
+require 'git-shell/ref_update_notifier'
 require 'git-shell/settings_schema' # Needs to be loaded after the application
 require 'git-shell/version'

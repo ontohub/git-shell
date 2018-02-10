@@ -45,6 +45,27 @@ module GitShell
         Executor.new(command).call
       end
 
+      # If the exit status is zero, updating the ref is permitted. Otherwise,
+      # the update is prevented.
+      # In a later version, we could ask the backend if the branch is protected
+      # and allow the update if it's not protected. Then, we need to change the
+      # analysis behaviour and possibly remove all data of deleted commits.
+      def update(_public_key_id, _repository_slug, _updated_ref,
+                 _revision_before_update, _revision_after_update,
+                 forced_update)
+        if forced_update
+          Kernel.warn('Force-pushes are not allowed.')
+          Kernel.exit(1)
+        else
+          Kernel.exit(0)
+        end
+      end
+
+      # This notifies the backend about all actually updated refs.
+      def post_receive(public_key_id, repository_slug, updated_refs)
+        RefUpdateNotifier.new(public_key_id, repository_slug, updated_refs).call
+      end
+
       protected
 
       def normalize_paths
