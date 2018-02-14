@@ -4,13 +4,13 @@ RSpec.describe GitShell::SettingsSchema do
   subject { Dry::Validation.Schema(GitShell::SettingsSchema).call(settings) }
   let(:settings) do
     {backend: {api_key: 'API_KEY', url: 'http://example.com'},
-     repository_root: '/path/to/repositories'}
+     data_directory: '/path/to/backend/data'}
   end
 
   before do
     allow(File).to receive(:directory?).and_call_original
     allow(File).
-      to receive(:directory?).with(settings[:repository_root]).and_return(true)
+      to receive(:directory?).with(settings[:data_directory]).and_return(true)
   end
 
   it 'passes' do
@@ -71,27 +71,27 @@ RSpec.describe GitShell::SettingsSchema do
       end
     end
 
-    context 'repository_root' do
+    context 'data_directory' do
       before do
         allow(File).
           to receive(:directory?).
-          with(settings[:repository_root]).
+          with(settings[:data_directory]).
           and_return(false)
         allow(File).
           to receive(:exist?).
-          with(settings[:repository_root]).
+          with(settings[:data_directory]).
           and_return(true)
       end
 
       it 'is nil' do
-        settings[:repository_root] = nil
+        settings[:data_directory] = nil
         expect(subject.errors).
-          to include(repository_root: ['must be filled'])
+          to include(data_directory: ['must be filled'])
       end
 
       it 'is not a directory' do
         expect(subject.errors).to include(
-          repository_root: ['is not a directory']
+          data_directory: ['is not a directory']
         )
       end
     end

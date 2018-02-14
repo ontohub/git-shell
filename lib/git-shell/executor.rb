@@ -5,10 +5,11 @@ module GitShell
   class Executor
     attr_reader :command, :executable, :repository_path
 
-    def initialize(command)
-      parts = command.split(' ')
-      @executable = parts[0]
-      @repository_path = Settings.repository_root.join("#{parts[1]}.git")
+    def initialize(command_array)
+      @executable = command_array[0]
+      repository_slug = command_array[1]
+      @repository_path =
+        Application.repository_root.join("#{repository_slug}.git")
       @command = "#{executable} #{repository_path}"
     end
 

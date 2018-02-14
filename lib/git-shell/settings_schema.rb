@@ -51,7 +51,7 @@ module GitShell
                               uri_has_scheme?: %w(http https))
       end
 
-      required(:repository_root).filled { directory? }
+      required(:data_directory).filled { directory? }
     end
   end
 end

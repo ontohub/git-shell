@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'config'
+require 'open3'
 require 'pathname'
 require 'git-shell/authorization'
 
@@ -26,6 +27,10 @@ module GitShell
         @env
       end
 
+      def repository_root
+        Settings.data_directory.join('git')
+      end
+
       def boot
         # This cannot be required at the top of the file because that file
         # itself requires the git-shell/application.
@@ -40,9 +45,12 @@ module GitShell
         true
       end
 
-      def execute(command, public_key_id)
-        return unless Authorization.new(command, public_key_id).call
-        Executor.new(command).call
+      def execute(command_array, public_key_id)
+        return unless Authorization.new(command_array, public_key_id).call
+        repository_slug = command_array[1]
+        Dir.chdir("#{repository_root.join(repository_slug)}.git") do
+          Executor.new(command_array).call
+        end
       end
 
       # If the exit status is zero, updating the ref is permitted. Otherwise,
@@ -50,11 +58,11 @@ module GitShell
       # In a later version, we could ask the backend if the branch is protected
       # and allow the update if it's not protected. Then, we need to change the
       # analysis behaviour and possibly remove all data of deleted commits.
-      def update(_public_key_id, _repository_slug, _updated_ref,
-                 _revision_before_update, _revision_after_update,
-                 forced_update)
-        if forced_update
-          Kernel.warn('Force-pushes are not allowed.')
+      def update(_public_key_id, repository_slug, _updated_ref,
+                 revision_before_update, revision_after_update)
+        if forced_update?(repository_slug,
+                          revision_before_update, revision_after_update)
+          Kernel.warn("Force-pushing (`git push --force') is not permitted.")
           Kernel.exit(1)
         else
           Kernel.exit(0)
@@ -69,7 +77,19 @@ module GitShell
       protected
 
       def normalize_paths
-        Settings.repository_root = root.join(Settings.repository_root)
+        Settings.data_directory = root.join(Settings.data_directory)
+      end
+
+      def forced_update?(repository_slug,
+                         revision_before_update, revision_after_update)
+        Dir.chdir("#{repository_root.join(repository_slug)}.git") do
+          # It is a forced update if `revision_before_update` is NOT an ancestor
+          # of `revision_after_update`, i.e. if the exit status is NOT success.
+          _, _, status =
+            Open3.capture3('git', 'merge-base', '--is-ancestor',
+                           revision_before_update, revision_after_update)
+          !status.success?
+        end
       end
     end
   end

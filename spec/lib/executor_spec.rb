@@ -8,10 +8,10 @@ RSpec.describe GitShell::Executor do
 
   let(:executable) { 'git-upload-pack' }
   let(:repository_slug) { 'ada/fixtures' }
-  let(:input) { "#{executable} #{repository_slug}" }
+  let(:input) { [executable, repository_slug] }
   subject { GitShell::Executor.new(input) }
   let(:full_repository_path) do
-    Settings.repository_root.join("#{repository_slug}.git")
+    GitShell::Application.repository_root.join("#{repository_slug}.git")
   end
   let(:command) { "#{executable} #{full_repository_path}" }
 

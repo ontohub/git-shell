@@ -2,4 +2,4 @@ backend:
   api_key: 8b2J6uUJgAiXxTEEJ4aSWc3npmGGUrKNW9LxJjMK1UxcKXnP8K3y9MATB6MEPRQP
   url: http://localhost:3000
 
-repository_root: /path/to/repositories
+data_directory: /path/to/backend/data

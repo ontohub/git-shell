@@ -33,7 +33,7 @@ RSpec.describe GitShell::RefUpdateNotifier do
       expect(GitShell::BackendCall).
         to receive(:new).
         with('UpdateRefs',
-             match(/mutation updateRefs(.*)/),
+             match(/mutation UpdateRefs(.*)/),
              keyId: public_key_id,
              repositoryId: repository_slug,
              updatedRefs: updated_refs_arg)

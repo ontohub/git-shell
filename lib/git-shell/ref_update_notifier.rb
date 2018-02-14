@@ -23,10 +23,14 @@ module GitShell
 
     protected
 
+    # rubocop:disable Metrics/MethodLength
     def run_query
+      # rubocop:enable Metrics/MethodLength
       operation_name = 'UpdateRefs'
       query = <<~QUERY
-        mutation updateRefs($keyId: Int!, $repositoryId: ID!, $updatedRefs: UpdatedRefs!)
+        mutation UpdateRefs($keyId: Int!, $repositoryId: ID!, $updatedRefs: [UpdatedRef!]!) {
+          updateRefs(keyId: $keyId, repositoryId: $repositoryId, updatedRefs: $updatedRefs)
+        }
       QUERY
       variables = {
         keyId: public_key_id,

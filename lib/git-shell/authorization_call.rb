@@ -31,7 +31,7 @@ module GitShell
 
     def fetch_authorization_data
       response = run_query
-      response_data = JSON.parse(response).dig('data', 'gitAuthorization')
+      response_data = JSON.parse(response).dig('data')
       if %w(pull push).any? { |field| response_data&.dig(field).nil? }
         raise BackendCallError
       end

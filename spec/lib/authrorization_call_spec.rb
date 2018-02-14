@@ -62,8 +62,8 @@ RSpec.describe GitShell::AuthorizationCall do
     let(:expected_push_result) { false }
     let(:response_body) do
       {'data' =>
-        {'gitAuthorization' => {'pull' => expected_pull_result,
-                                'push' => expected_push_result}}}.to_json
+        {'pull' => expected_pull_result,
+         'push' => expected_push_result}}.to_json
     end
 
     include_examples 'make the correct call'
@@ -75,8 +75,8 @@ RSpec.describe GitShell::AuthorizationCall do
     let(:expected_push_result) { false }
     let(:response_body) do
       {'data' =>
-        {'gitAuthorization' => {'pull' => expected_pull_result,
-                                'push' => expected_push_result}}}.to_json
+        {'pull' => expected_pull_result,
+         'push' => expected_push_result}}.to_json
     end
 
     include_examples 'make the correct call'
@@ -88,8 +88,8 @@ RSpec.describe GitShell::AuthorizationCall do
     let(:expected_push_result) { true }
     let(:response_body) do
       {'data' =>
-        {'gitAuthorization' => {'pull' => expected_pull_result,
-                                'push' => expected_push_result}}}.to_json
+        {'pull' => expected_pull_result,
+         'push' => expected_push_result}}.to_json
     end
 
     include_examples 'make the correct call'
@@ -98,7 +98,7 @@ RSpec.describe GitShell::AuthorizationCall do
 
   context 'without a connection to the backend' do
     let(:response_body) do
-      {'data' => {'gitAuthorization' => nil}}.to_json
+      {'data' => nil}.to_json
     end
 
     before do

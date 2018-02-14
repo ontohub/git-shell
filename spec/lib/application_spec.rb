@@ -49,7 +49,7 @@ RSpec.describe GitShell::Application do
     end
 
     it 'has normalized paths' do
-      expect(Settings.repository_root).to be_a(Pathname)
+      expect(Settings.data_directory).to be_a(Pathname)
     end
 
     context 'execute' do
@@ -87,23 +87,29 @@ RSpec.describe GitShell::Application do
       let(:updated_ref) { 'branch1' }
       let(:revision_before_update) { '0' * 40 }
       let(:revision_after_update) { '1' * 40 }
+      let(:status) { double(:status) }
 
       before do
         allow(Kernel).to receive(:exit)
         allow(Kernel).to receive(:warn)
+        allow(status).to receive(:success?).and_return(!forced_update)
+        allow(Open3).
+          to receive(:capture3).
+          with('git', 'merge-base', '--is-ancestor', any_args).
+          and_return(['', '', status])
+
         GitShell::Application.update(public_key_id,
                                      repository_slug,
                                      updated_ref,
                                      revision_before_update,
-                                     revision_after_update,
-                                     forced_update)
+                                     revision_after_update)
       end
 
       context 'forced update' do
         let(:forced_update) { true }
 
         it 'prints an error message' do
-          expect(Kernel).to have_received(:warn).with(match(/not allowed/))
+          expect(Kernel).to have_received(:warn).with(match(/not permitted/))
         end
 
         it 'exits unsuccessfully' do
@@ -111,7 +117,7 @@ RSpec.describe GitShell::Application do
         end
       end
 
-      context 'not forced update' do
+      context 'regular update' do
         let(:forced_update) { false }
 
         it 'exits unsuccessfully' do

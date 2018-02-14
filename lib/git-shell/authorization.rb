@@ -12,6 +12,7 @@ module GitShell
     NO_WRITE_ACCESS_MESSAGE =
       'Unauthorized: You are unauthorized to write to this repository.'
     BAD_GIT_ACTION_MESSAGE = 'Unauthorized: Bad git action.'
+    BAD_REPOSITORY_SLUG = 'Unauthorized: Bad repository name format.'
     BACKEND_NOT_REACHABLE = 'Error: Failed to check permissions.'
 
     attr_reader :git_command, :repository_slug, :public_key_id
@@ -22,8 +23,13 @@ module GitShell
       @public_key_id = public_key_id
     end
 
+    # rubocop:disable Metrics/AbcSize
+    # rubocop:disable Metrics/CyclomaticComplexity
     def call
+      # rubocop:enable Metrics/AbcSize
+      # rubocop:enable Metrics/CyclomaticComplexity
       return fail_with(BAD_GIT_ACTION_MESSAGE) unless git_command_valid?
+      return fail_with(BAD_REPOSITORY_SLUG) unless slug_valid?
       auth = AuthorizationCall.new(public_key_id, repository_slug).call
       return fail_with(NO_READ_ACCESS_MESSAGE) unless auth[:pull]
       return true if read_only_command?
@@ -42,6 +48,10 @@ module GitShell
 
     def git_command_valid?
       ALLOWED_GIT_ACTIONS.include?(git_command)
+    end
+
+    def slug_valid?
+      !!@repository_slug.match(%r{[a-z0-9_\-]+/[a-z0-9_\-]})
     end
 
     def read_only_command?
