@@ -8,4 +8,4 @@ cd $dir/..
 source /home/travis/.rvm/environments/ruby-$(cat .ruby-version)
 
 # Replace this process to propagate the exit code
-exec bin/git-shell "$@"
+exec bundle exec bin/git-shell "$@"

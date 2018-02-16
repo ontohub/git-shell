@@ -8,4 +8,4 @@ dir="$(dirname $0)"
 cd $dir/..
 
 # Replace this process to propagate the exit code
-exec bin/git-shell "$@"
+exec bundle exec bin/git-shell "$@"
