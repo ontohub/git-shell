@@ -9,7 +9,7 @@ RSpec.describe GitShell::Authorization do
       to receive(:new).and_return(authorization_call)
     allow(authorization_call).
       to receive(:call).
-      and_return({pull: pull_permission, push: push_permission})
+      and_return(pull: pull_permission, push: push_permission)
   end
 
   let(:executable) { 'git-upload-pack' }

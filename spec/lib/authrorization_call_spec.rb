@@ -37,7 +37,7 @@ RSpec.describe GitShell::AuthorizationCall do
 
     it 'has the correct result' do
       expect(subject.call).
-        to eq({pull: expected_pull_result, push: expected_push_result})
+        to eq(pull: expected_pull_result, push: expected_push_result)
     end
 
     it 'pull? is correct' do

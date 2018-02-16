@@ -599,7 +599,7 @@ Naming/FileName:
   # excludes here.
   Exclude:
     - lib/git-shell.rb
-    - spec/git-shell_spec.rb
+    - spec/lib/git-shell_spec.rb
   # When `true`, requires that each source file should define a class or module
   # with a name which matches the file name (converted to ... case).
   # It further expects it to be nested inside modules which match the names

@@ -17,7 +17,7 @@ Metrics/LineLength:
 Naming/FileName:
   Exclude:
     - lib/git-shell.rb
-    - spec/git-shell_spec.rb
+    - spec/lib/git-shell_spec.rb
 
 Layout/AlignParameters:
   Enabled: false

@@ -28,19 +28,22 @@ RSpec.describe GitShell::SettingsSchema do
 
         it 'is not a string' do
           settings[:backend][:url] = 0
-          expect(subject.errors).to include(backend: include(url: ['must be a string']))
+          expect(subject.errors).
+            to include(backend: include(url: ['must be a string']))
         end
 
         it 'has a bad schema' do
           settings[:backend][:url] = 'gopher://example.com'
+          message = 'has an invalid scheme (only http, https are allowed)'
           expect(subject.errors).to include(
-            backend: include(url: ['has an invalid scheme (only http, https are allowed)'])
+            backend: include(url: [message])
           )
         end
 
         it 'has a path' do
           settings[:backend][:url] = 'http://example.com/some_path'
-          expect(subject.errors).to include(backend: include(url: ['must not have a path']))
+          expect(subject.errors).
+            to include(backend: include(url: ['must not have a path']))
         end
 
         it 'has a query string' do
