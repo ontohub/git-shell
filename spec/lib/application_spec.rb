@@ -42,6 +42,7 @@ RSpec.describe GitShell::Application do
   context 'after booting' do
     before do
       GitShell::Application.boot
+      allow(Dir).to receive(:chdir) { |&block| block.call }
     end
 
     it 'has the settings' do
@@ -66,6 +67,13 @@ RSpec.describe GitShell::Application do
 
       context 'authorized' do
         let(:authorized) { true }
+
+        it 'changes the directory to the repository' do
+          expect(Dir).
+            to have_received(:chdir).
+            with(GitShell::Application.repository_root.
+                   join('ada/fixtures.git').to_s)
+        end
 
         it 'calls the executor' do
           expect(executor).to have_received(:call)
