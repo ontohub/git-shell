@@ -1,0 +1,46 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+unless ENV['SSH_CONNECTION']
+  Kernel.warn('Only git actions via SSH are allowed.')
+  exit 1
+end
+
+lib = File.expand_path('../../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+
+require 'bundler/setup'
+require 'git-shell'
+
+GitShell::Application.boot
+
+case ARGV[0]
+when 'update'
+  # Called by the update hook
+  repository_slug = ARGV[1]
+  updated_ref = ARGV[2]
+  revision_before_update = ARGV[3]
+  revision_after_update = ARGV[4]
+  GitShell::Application.update(ENV['PUBLIC_KEY_ID'].to_i,
+                               repository_slug,
+                               updated_ref,
+                               revision_before_update,
+                               revision_after_update)
+when 'post-receive'
+  # Called by the post-receive hook
+  repository_slug = ARGV[1]
+  updated_refs = ARGV[2]
+  GitShell::Application.post_receive(ENV['PUBLIC_KEY_ID'].to_i,
+                                     repository_slug,
+                                     updated_refs)
+else
+  # Called directly by git on the SSH connection
+  ENV['PUBLIC_KEY_ID'] = ARGV[0]
+  ssh_command = ENV['SSH_ORIGINAL_COMMAND']&.split(' ')&.map do |argument|
+    # Strip quotes at the beginning and end of each argument.
+    # This can be safely done because all these git-related commands
+    # don't contain a space.
+    argument.sub(/\A['"]/, '').sub(/['"]\z/, '')
+  end
+  GitShell::Application.execute(ssh_command, ENV['PUBLIC_KEY_ID'].to_i)
+end

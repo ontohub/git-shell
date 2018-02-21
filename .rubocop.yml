@@ -1,0 +1,85 @@
+AllCops:
+  TargetRubyVersion: 2.5
+  TargetRailsVersion: 5.1
+
+  CacheRootDirectory: /tmp
+  AllowSymlinksInCacheRootDirectory: true
+
+  Exclude:
+    - 'apidoc/**/*'
+    - 'bin/bundle'
+    - 'bin/rails'
+    - 'bin/rake'
+    - 'bin/setup'
+    - 'bin/spring'
+    - 'bin/update'
+    - 'db/schema.rb'
+    - 'node_modules/**/*'
+    - 'spec/dummy/**/*'
+    - 'vendor/**/*'
+    - 'repositories/**/*'
+    - 'tmp/**/*'
+
+Layout/AlignParameters:
+  Enabled: false
+
+Layout/DotPosition:
+  EnforcedStyle: trailing
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+Layout/SpaceInsideHashLiteralBraces:
+  EnforcedStyle: no_space
+
+Metrics/BlockLength:
+  Exclude:
+    - 'app/graphql/**/*'
+    - 'config/routes.rb'
+    - 'config/environments/**/*'
+    - 'config/initializers/devise.rb'
+    - 'lib/tasks/**/*.rake'
+    - 'spec/**/*'
+    - 'db/migrate/*'
+    - '*.gemspec'
+
+Metrics/LineLength:
+  Exclude:
+    - 'app/graphql/**/*_enum.rb'
+    - 'config/initializers/devise.rb'
+
+Naming/FileName:
+  Exclude:
+    - lib/git-shell.rb
+    - lib/hets-agent.rb
+    - lib/ontohub-models.rb
+    - spec/lib/git-shell_spec.rb
+
+Style/Documentation:
+  Exclude:
+    - 'app/indexers/**/*'
+
+Style/DoubleNegation:
+  Enabled: false
+
+Style/FormatStringToken:
+  Enabled: false
+
+Style/NumericLiterals:
+  Enabled: false
+
+Style/PercentLiteralDelimiters:
+  PreferredDelimiters:
+    default: ()
+    '%i': '()'
+    '%I': '()'
+    '%r': '{}'
+    '%w': '()'
+    '%W': '()'
+
+Style/SymbolArray:
+  Exclude:
+    - 'db/migrate/**'
+
+Style/TrailingCommaInLiteral:
+  EnforcedStyleForMultiline: comma
