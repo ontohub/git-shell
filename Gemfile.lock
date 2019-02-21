@@ -141,7 +141,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (~> 1.14)
+  bundler (~> 2.0)
   codecov (~> 0.1.10)
   fuubar (~> 2.3.0)
   git-shell!
@@ -155,4 +155,4 @@ DEPENDENCIES
   simplecov (~> 0.16.1)
 
 BUNDLED WITH
-   1.16.1
+   2.0.1
