@@ -36,7 +36,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'pry-stack_explorer', '~> 0.4.9.2'
   spec.add_development_dependency 'rake', '~> 12.0'
   spec.add_development_dependency 'rspec', '~> 3.7'
-  spec.add_development_dependency 'rubocop', '~> 0.65.0'
+  spec.add_development_dependency 'rubocop', '~> 0.69.0'
   spec.add_development_dependency 'simplecov', '~> 0.16.1'
 
   spec.add_dependency 'config', '>= 1.6.1', '< 1.8.0'
