@@ -40,5 +40,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'simplecov', '~> 0.16.1'
 
   spec.add_dependency 'config', '>= 1.6.1', '< 1.8.0'
-  spec.add_dependency 'rest-client', '~> 2.0.2'
+  spec.add_dependency 'rest-client', '>= 2.0.2', '< 2.2.0'
 end
